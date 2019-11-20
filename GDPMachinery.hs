@@ -1,12 +1,12 @@
-{-# LANGUAGE TypeOperators, RankNTypes, DefaultSignatures, MultiParamTypeClasses, FunctionalDependencies, FlexibleInstances #-}
+{-# LANGUAGE TypeOperators, RankNTypes, DefaultSignatures, MultiParamTypeClasses, FunctionalDependencies, FlexibleInstances, FlexibleContexts, TypeFamilies #-}
 module GDPMachinery
-  (name, type (~~)(), The(..))
+  (name, type (~~)(), The(..), Proof(), axiom, defn, Defn(), Defining, (:::)(), (...), proof)
   where
 
 import Data.Coerce
 
 newtype a ~~ name = Named a
-infix 0 ~~
+-- infix 0 ~~
 
 -- class Coercible a b where
 --   coerce :: a -> b
@@ -26,3 +26,26 @@ class The a b | a -> b where
   the = coerce
 
 instance The (a ~~ name) a
+
+data Defn = Defn
+
+class (Coercible f Defn, Coercible Defn f) => Defining f
+instance (Coercible f Defn, Coercible Defn f) => Defining f
+
+defn :: Defining f => a -> (a ~~ f)
+defn = coerce
+
+data Proof a = QED
+
+axiom :: Proof a
+axiom = QED
+
+newtype (:::) a p = SuchThat a
+
+instance The (a ::: p) a
+
+(...) :: a -> Proof p -> a ::: p
+a ... _ = coerce a
+
+proof :: (a ::: p) -> Proof p
+proof _ = axiom
