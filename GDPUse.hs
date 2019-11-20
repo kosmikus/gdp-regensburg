@@ -2,7 +2,7 @@
 module GDPUse where
 
 import GDPMachinery
-import GDPRegensburg
+import GDPSort
 
 test xs ys =
   name (flip compare) $ \ cmp ->

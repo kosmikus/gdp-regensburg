@@ -1,5 +1,5 @@
 {-# LANGUAGE TypeOperators, FlexibleInstances, MultiParamTypeClasses #-}
-module GDPRegensburg
+module GDPSort
   (sortBy', mergeBy', SortedBy())
   where
 
